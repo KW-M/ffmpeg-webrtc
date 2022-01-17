@@ -23,7 +23,9 @@ type Camera struct {
 }
 
 func (c *Camera) Stream(videoTrack *webrtc.Track) error {
-	cmd := exec.Command("ffmpeg", "-framerate", "30", "-f", "v4l2", "-input_format", "h264", "-video_size", fmt.Sprintf("%vx%v", c.Width, c.Height), "-i", c.DevicePath, "-c", "copy", "-f", "h264", "pipe:1")
+	// cmd := exec.Command("ffmpeg", "-framerate", "30", "-f", "v4l2", "-input_format", "h264", "-video_size", fmt.Sprintf("%vx%v", c.Width, c.Height), "-i", c.DevicePath, "-c", "copy", "-f", "h264", "pipe:1")
+	cmd := exec.Command("libcamera-vid", "-t","0", "--framerate", "10", "--codec", "h264", "--inline", "1", "--flush", "1", "-o", "-")
+
 	fmt.Println(cmd.Args)
 
 	dataPipe, err := cmd.StdoutPipe()
